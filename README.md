@@ -1,2 +1,1 @@
-# odin-maas
-Odin masternode as a service
+Masternode Cloud Project

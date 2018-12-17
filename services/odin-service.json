@@ -1,0 +1,23 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "odin-service",
+        "labels": {
+            "app": "dply"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 22100,
+                "targetPort": 22100
+            }
+        ],
+        "selector": {
+            "app": "dply"
+        },
+        "type": "LoadBalancer"
+    }
+}

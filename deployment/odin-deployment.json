@@ -1,0 +1,74 @@
+{
+   "apiVersion": "apps/v1",
+   "kind": "Deployment",
+   "metadata": {
+      "name": "odin-deployment",
+      "labels": {
+         "app": "odin"
+      }
+   },
+   "spec": {
+      "replicas": 1,
+      "selector": {
+         "matchLabels": {
+            "app": "odin"
+         }
+      },
+      "template": {
+         "metadata": {
+            "labels": {
+               "app": "odin"
+            }
+         },
+   "spec": {
+      "containers": [
+         {
+            "name": "odin",
+            "image": "registry.hub.docker.com/bohica/odin:latest",
+			"command": [ "/bin/bash", "-c", "cp -r /root/odin_data_sync/ /root/odin_data/ && sleep 60 && odind -datadir=/root/odin_data -conf=/root/.odin/odin.conf && tail -f /dev/null"],
+            "ports": [
+               {
+                  "containerPort": 22100
+               }
+            ],
+            "resources": {
+               "limits": {
+                  "cpu": "0.9"
+               }
+            },
+            "volumeMounts": [
+               {
+                  "mountPath": "/root/.odin",
+                  "name": "config"
+               },
+              {
+                "name": "odin-storage",
+                "mountPath": "/root/odin_data_sync"
+              }
+            ]
+         }
+      ],
+      "volumes": [
+         {
+            "name": "config",
+            "configMap": {
+               "name": "odin-config",
+               "items": [
+                  {
+                     "key": "odin.conf",
+                     "path": "odin.conf"
+                  }
+               ]
+            }
+         },
+         {
+            "name": "odin-storage",
+            "persistentVolumeClaim": {
+               "claimName": "odin-data-pv-claim"
+            }
+         }
+            ]
+   }
+      }
+   }
+}
