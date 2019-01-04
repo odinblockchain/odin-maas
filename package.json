@@ -1,0 +1,23 @@
+{
+  "name": "odin-maas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Bohica",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "kubernetes-client": "^6.5.0",
+    "mongoose": "^5.4.1",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.7",
+    "process": "^0.11.10",
+    "shelljs": "^0.8.3"
+  }
+}

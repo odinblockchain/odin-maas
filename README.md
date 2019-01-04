@@ -1,1 +1,0 @@
-Masternode Cloud Project

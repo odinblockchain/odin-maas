@@ -1,0 +1,1 @@
+{"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"name":"monkey10"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}}}}
