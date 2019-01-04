@@ -1,6 +1,5 @@
 # Don't track content of these folders
 node_modules/
-api/config/
 
 
 # Compiled source #
@@ -26,3 +25,5 @@ api/config/
 *.rar
 *.tar
 *.zip
+package-lock.json
+api/config/db.js
