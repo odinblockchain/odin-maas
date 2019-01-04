@@ -26,3 +26,4 @@ api/config/
 *.rar
 *.tar
 *.zip
+package-lock.json
