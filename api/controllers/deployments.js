@@ -4,7 +4,6 @@ const Client = require('kubernetes-client').Client
 const config = require('kubernetes-client').config
 const client = new Client({ config: config.fromKubeconfig(), version: '1.9' })
 
-
 exports.deployments_get_all = (req, res) => {
     Deployment.find()
         .exec()
@@ -25,6 +24,7 @@ exports.deployments_get_all = (req, res) => {
             });
         });
 }
+
 exports.deployment_get_id = (req, res) => {
     const id = req.params.id;
     Deployment.findById(id)
@@ -44,6 +44,7 @@ exports.deployment_get_id = (req, res) => {
             res.status(500).json({ error: err });
         });
 }
+
 exports.deployment_create_deployment = (req, res) => {
     const deployment = new Deployment({
         _id: new mongoose.Types.ObjectId(),
@@ -141,6 +142,7 @@ exports.deployment_create_deployment = (req, res) => {
             })
         })
 }
+
 exports.deployment_patch_deployment = (req, res) => {
     const id = req.params.id;
     const updateOps = {};
@@ -160,6 +162,7 @@ exports.deployment_patch_deployment = (req, res) => {
             });
         });
 }
+
 exports.deployment_delete_deployment = (req, res) => {
     const id = req.params.id;
     Deployment.remove({ _id: id })

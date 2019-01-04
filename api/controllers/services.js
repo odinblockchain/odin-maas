@@ -24,6 +24,7 @@ exports.services_get_all = (req, res) => {
             });
         });
 }
+
 exports.service_get_id = (req, res) => {
     const id = req.params.id;
     Service.findById(id)
@@ -92,6 +93,7 @@ exports.service_create_service = (req, res) => {
 
     })
 }
+
 exports.service_patch_service = (req, res) => {
     const id = req.params.id;
     const updateOps = {};
@@ -111,6 +113,7 @@ exports.service_patch_service = (req, res) => {
             });
         });
 }
+
 exports.service_delete_service = (req, res) => {
     const id = req.params.id;
     Service.remove({ _id: id })

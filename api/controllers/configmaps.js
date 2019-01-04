@@ -1,3 +1,9 @@
+const mongoose = require('mongoose')
+const ConfigMap = require('../models/configmaps')
+const Client = require('kubernetes-client').Client
+const config = require('kubernetes-client').config
+const client = new Client({ config: config.fromKubeconfig(), version: '1.9' })
+
 exports.configmaps_get_all =  (req, res) => {
     ConfigMap.find()
     .exec()
@@ -65,7 +71,6 @@ exports.configmaps_create_configmap =  async (req, res) => {
                  "odin.conf" : configmap.data.odin.conf
                 }
             }
-            //console.log('Create: ', create)
         })
         console.log('Create: ', create)
     })
@@ -90,9 +95,6 @@ exports.configmaps_patch_configmap = (req,res) => {
             });
         });
 }
-
-
-
 
 exports.configmaps_delete_configmap = (req,res) => {
     const id = req.params.id;

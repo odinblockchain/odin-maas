@@ -1,13 +1,6 @@
-const Client = require('kubernetes-client').Client
-const config = require('kubernetes-client').config
-const client = new Client({ config: config.fromKubeconfig(), version: '1.9' })
-const ConfigMap = require('../models/configmaps')
-const ConfigMapController = require('../controllers/configmaps')
-const mongoose = require('mongoose');
-
-
 const express = require('express');
 const configmaprouter = express.Router();
+const ConfigMapController = require('../controllers/configmaps')
 
 configmaprouter.get('/',ConfigMapController.configmaps_get_all);
 
