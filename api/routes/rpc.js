@@ -8,4 +8,6 @@ rpcrouter.get("/masternodestatus",RpcController.getMasternodeStatus)
 
 rpcrouter.get("/masternodelist",RpcController.getMasternodeList)
 
+rpcrouter.get("/masternodegenkey",RpcController.getMasternodePrivateKey)
+
 module.exports = rpcrouter

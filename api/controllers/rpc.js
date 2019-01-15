@@ -2,7 +2,7 @@ const RpcClient = require('node-json-rpc2').Client;
 var dotConf = require("@sim.perelli/dot-conf")
 var odinRpc = "";
 
-async function getconfigs(path) {
+exports.getConfig = async function getconfigs(path) {
   const s = await dotConf(path)
   var user = s('rpcuser')
   var password = s('rpcpassword')
@@ -12,14 +12,13 @@ async function getconfigs(path) {
     password: password,
     port: 1988
   }
+
+  var clientConfig = getConfig(path);
+  clientConfig.then((value) => {
+  odinRpc = new RpcClient(value);
   return RpcConfig
 }
-
-var clientConfig = getconfigs('./odin.conf');
-clientConfig.then((value) => {
-  odinRpc = new RpcClient(value);
-}
-)
+)}
 
 exports.getInfo = function (req, res) {
   odinRpc.call({
@@ -59,4 +58,18 @@ exports.getMasternodeList = function (req, res) {
     }
     res.send({ body: result.result })
   })
+}
+exports.getMasternodePrivateKey = function (req, res) {
+  odinRpc.call({
+    method: 'masternode',
+    params: ["genkey"]
+  }, (err, result) => {
+    if (err) {
+      res.status(500).json({
+        error: err.message
+      })
+    }
+   // res.send({ body: result.result })
+  })
+  return result.result
 }

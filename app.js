@@ -10,6 +10,8 @@ const deploymentRoutes = require('./api/routes/deployments');
 const configmapRoutes = require('./api/routes/configmaps');
 const masternodeRoutes = require('./api/routes/masternodes');
 const rpcRoutes = require('./api/routes/rpc');
+const nodeRoutes = require('./api/routes/nodes');
+const userRoutes = require('./api/routes/user')
 
 mongoose.connect(db.url,({
      useNewUrlParser: true 
@@ -36,6 +38,8 @@ app.use ('/deployments',deploymentRoutes);
 app.use ('/configmaps',configmapRoutes);
 app.use('/masternodes',masternodeRoutes);
 app.use('/rpc',rpcRoutes);
+app.use('/nodes',nodeRoutes);
+app.use('/user',userRoutes);
 
 app.use((req,res,next) => {
 const error = new Error('Not found');
