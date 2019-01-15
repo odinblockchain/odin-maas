@@ -27,3 +27,5 @@ node_modules/
 *.zip
 package-lock.json
 api/config/db.js
+.vscode/launch.json
+.vscode/

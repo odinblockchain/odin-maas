@@ -4,34 +4,76 @@ const NodeController = require('../controllers/node')
 const RpcController = require('../controllers/rpc')
 const RpcClient = require('node-json-rpc2').Client;
 var dotConf = require("@sim.perelli/dot-conf")
+const Nodes = require('../models/nodes')
 var odinRpc = "";
+var path = './odin_n1.conf'
 
 noderouter.get("/", NodeController.nodes_get_all)
 
-noderouter.get("/odin_n1", async function getconfigs(req, res) {
-    path = './odin_n1.conf'
+async function rpcclient()
+{
+    const rpccreds = getrpcconfigs();
+    odinRpc = new RpcClient(rpccreds);
+}
+
+async function getrpcconfigs(res) {
     const s = await dotConf(path)
-    var user = s('rpcuser')
-    var password = s('rpcpassword')
-    var ip = s('bind')
-    var masternodeprivatekey = s('masternodeprivkey')
-
-    const RpcConfig = {
-        user: user,
-        password: password,
-        port: 1988
+    var rpcuser = s('rpcuser')
+    var rpcpassword = s('rpcpassword')
+    RpcConfig = {
+        rpcuser: rpcuser,
+        rpcpassword:rpcpassword,
+        rpcport: 1988
     }
-    const nodeConfig = {
-        name: "odin_n1",
-        nodeip: ip,
-        nodeprivkey: masternodeprivatekey
-    }
+        res.status(200).json(RpcConfig)
+}
 
-    odinRpc = new RpcClient(RpcConfig);
+
+noderouter.get("/odin_n1/config", (req, res) => {
+    Nodes.find()
+        .exec()
+        .then(docs => {
+            console.log(docs);
+            if (docs.length >= 0) {
+                res.status(200).json(docs);
+            } else {
+                res.status(404).json({
+                    message: 'No entries found'
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+  //  const nodeConfig = {
+   //     name: "odin_n1",
+    //    nodeip: bind,
+   //     nodeprivkey: masternodeprivkey
+  //  }
+
+  // odinRpc = new RpcClient(RpcConfig);
     res.status(200).json(nodeConfig)
 })
+noderouter.get("/odin_n1/status", function (req, res) {
+    odinRpc.call({
+      method: 'masternode',
+      params: ["genkey"]
+    }, (err, result) => {
+      if (err) {
+        res.status(500).json({
+          error: err.message
+        })
+      }
+      res.send({ body: result.result })
+    })
+    
+  })
 
-noderouter.post("/", (req, res) => {
+noderouter.post("/", async function(req, res){
+
 
     const node = new Nodes({
         _id: new mongoose.Types.ObjectId(),

@@ -4,6 +4,29 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+
+router.get("/",(req, res) => {
+    User.find()
+        .exec()
+        .then(docs => {
+            console.log(docs);
+            if (docs.length >= 0) {
+                res.status(200).json(docs);
+            } else {
+                res.status(404).json({
+                    message: 'No entries found'
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+})
+
+
 router.post("/signup", (req, res, next) => {
     User.find({ user: req.body.user })
       .exec()
