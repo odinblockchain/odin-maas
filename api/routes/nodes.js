@@ -5,18 +5,8 @@ const RpcController = require('../controllers/rpc')
 var dotConf = require("@sim.perelli/dot-conf")
 const Nodes = require('../models/nodes')
 const mongoose = require('mongoose')
+var os = require("os");
 
-noderouter.get("/", NodeController.nodes_get_all)
-
-noderouter.get("/odin_n1", (req, res) => {
-    Nodes.find({ name: "odin_n1" }, function (err, config) {
-        if (err) {
-            res.send(err);
-        }
-        res.status(200).json(config);
-    })
-
-})
 
 async function getconfigs(path) {
     const s = await dotConf(path)
@@ -34,7 +24,10 @@ async function getconfigs(path) {
     return nodeConfig
 }
 
-noderouter.post("/odin_n1/status", RpcController.getMasternodeStatus)
+noderouter.get("/", NodeController.nodes_get_all)
+
+//requires req.body.configpath
+noderouter.post("/status", RpcController.getMasternodeStatus)
 
 //requires name and config path
 noderouter.post("/", async function (req, res) {
@@ -44,6 +37,7 @@ noderouter.post("/", async function (req, res) {
 
             const node = new Nodes({
                 _id: new mongoose.Types.ObjectId(),
+                hostname: os.hostname(),
                 name: req.body.name,
                 rpcuser: docs.user,
                 rpcpassword: docs.password,

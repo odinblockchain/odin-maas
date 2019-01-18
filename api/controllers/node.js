@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Nodes = require('../models/nodes')
-const j2e = require('../controllers/json2conf')
 const express = require('express');
 const rpcrouter = express.Router();
 const RpcController = require('../controllers/rpc')
