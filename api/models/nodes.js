@@ -7,6 +7,7 @@ const nodeSchema = mongoose.Schema({
     rpcpassword: String,
     nodeip: String,
     nodeprivkey: String,
+    configpath: String,
     allocated: Boolean
 })
 module.exports = mongoose.model('Node',nodeSchema)

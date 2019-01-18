@@ -2,7 +2,7 @@ const RpcClient = require('node-json-rpc2').Client;
 var dotConf = require("@sim.perelli/dot-conf")
 var odinRpc = "";
 
-exports.getConfig = async function getconfigs(path) {
+async function getconfigs(path) {
   const s = await dotConf(path)
   var user = s('rpcuser')
   var password = s('rpcpassword')
@@ -12,13 +12,8 @@ exports.getConfig = async function getconfigs(path) {
     password: password,
     port: 1988
   }
-
-  var clientConfig = getConfig(path);
-  clientConfig.then((value) => {
-  odinRpc = new RpcClient(value);
   return RpcConfig
-}
-)}
+ }
 
 exports.getInfo = function (req, res) {
   odinRpc.call({
@@ -33,7 +28,10 @@ exports.getInfo = function (req, res) {
   })
 }
 
-exports.getMasternodeStatus = function (req, res) {
+exports.getMasternodeStatus = async function (req, res) {
+   getconfigs(req.body.configpath)
+  .then(docs => {
+    odinRpc = new RpcClient(docs)
   odinRpc.call({
     method: 'getmasternodestatus'
   }, (err, result) => {
@@ -42,8 +40,13 @@ exports.getMasternodeStatus = function (req, res) {
         error: err.message + ". Most likely not a masternode"
       })
     }
-    res.send({ body: result.result })
+    res.status(200).json({ body: result.result })
   })
+})
+  .catch(err => {
+    res.status(500).json(err.message) 
+  })
+
 }
 
 exports.getMasternodeList = function (req, res) {
